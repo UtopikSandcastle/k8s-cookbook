@@ -22,13 +22,11 @@ kind: Service
 metadata:
   name: accesscontrol-api
 spec:
-  template: 
-    # add your template configuration here
+  selector:
+    app:  accesscontrol-api
   ports:
     - port: 80
       protocol: TCP
-  selector:
-    app:  accesscontrol-api
 
 ---
 apiVersion: apps/v1
