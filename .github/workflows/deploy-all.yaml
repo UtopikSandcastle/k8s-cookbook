@@ -14,7 +14,7 @@ jobs:
       - name: Loop over projects
         run: |
           ref=$(basename "${{ github.ref }}")
-          project=$PROJECTS
+          project=("accesscontrol-api")
           for project in "${project[@]}"; do
             echo "Deploying $project..."
             # Call the 'deploy' workflow for each project
