@@ -14,7 +14,8 @@ jobs:
       - name: Loop over projects
         run: |
           ref=$(basename "${{ github.ref }}")
-          for project in "${PROJECTS[@]}"; do
+          project=$PROJECTS
+          for project in "${project[@]}"; do
             echo "Deploying $project..."
             # Call the 'deploy' workflow for each project
             curl -v -X POST -H "Accept: application/vnd.github.v3+json" \
