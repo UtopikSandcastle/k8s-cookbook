@@ -13,6 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run: cat manifests/accesscontrol-api.yaml > manifests/accesscontrol-api.yaml
+
       - name: "Deploy: accesscontrol-api"
         uses: actions-hub/kubectl@v1.29.2
         env:
