@@ -4,7 +4,6 @@ kind: Ingress
 metadata:
   name: hello-world
 spec:
-  ingressClassName: traefik
   rules:
   - http:
       paths:
