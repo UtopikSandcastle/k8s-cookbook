@@ -1,4 +1,59 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: accesscontrol-api
+spec:
+  rules:
+  - host: sandcastle.${DOMAIN}
+    http:
+      paths:
+      - path: /api/accesscontrol
+        pathType: Prefix
+        backend:
+          service:
+            name: accesscontrol-api
+            port:
+              number: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: accesscontrol-api
+spec:
+  template: 
+    # add your template configuration here
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    app:  accesscontrol-api
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: sandcastle-accesscontrol
+  name: accesscontrol-api
+spec:
+  selector:
+    matchLabels:
+      app: accesscontrol-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: accesscontrol-api
+    spec:
+      containers:
+      - name: accesscontrol-api
+        image: ${REGISTRY}/utopiksandcastle/accesscontrol-api:${VERSION}
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.1"
+            memory: "128Mi"

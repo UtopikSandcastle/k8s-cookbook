@@ -4,14 +4,20 @@ on:
   workflow_dispatch:
   push:
 
+env:
+  DOMAIN: utopiklab.net
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions-hub/kubectl@v1.29.2
+      - name: "Deploy: accesscontrol-api"
+        uses: actions-hub/kubectl@v1.29.2
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          REGISTRY: ghcr.io
+          VERSION: main
         with:
-          args: apply -f manifests/hello-world.yml
+          args: apply -f manifests/accesscontrol-api.yaml
