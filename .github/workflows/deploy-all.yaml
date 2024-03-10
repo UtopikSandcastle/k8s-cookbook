@@ -2,9 +2,15 @@ name: Deploy All Projects
 
 on:
   push:
+  workflow_dispatch:
+
+env:
+  HOST: sandcastle.utopiklab.net
+  REGISTRY: ghcr.io
+  VERSION: main
 
 jobs:
-  deploy_all:
+  deploy-all:
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,21 +18,22 @@ jobs:
         project: 
           - accesscontrol-api
 
+    env:
+      PROJECT: ${{ matrix.project }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Call Deploy Workflow
-        uses: ./.github/workflows/deploy.yaml
-        with:
-          project: ${{ matrix.project }}
+      - name: "Set up manifest"
+        run: |
+          envsubst < manifests/$PROJECT.yaml > temp.yaml && \
+            mv temp.yaml manifests/$PROJECT.yaml
+          cat manifests/$PROJECT.yaml
 
-      # - name: Loop over projects
-      #   run: |
-      #     ref=$(basename "${{ github.ref }}")
-      #     echo "Deploying ${{ matrix.project }}..."
-      #     # Call the 'deploy' workflow for each project
-      #     curl POST -H "Accept: application/vnd.github.v3+json" \
-      #       -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-      #       https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yaml/dispatches \
-      #       -d "{\"ref\":\"$ref\", \"inputs\": {\"project\": \"${{ matrix.project }}\"}}" --trace -
+      - name: "Deploy ${{ env.PROJECT }}"
+        uses: actions-hub/kubectl@v1.29.2
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: apply -f manifests/${{ env.PROJECT }}.yaml

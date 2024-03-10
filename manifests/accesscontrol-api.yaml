@@ -5,7 +5,7 @@ metadata:
   name: accesscontrol-api
 spec:
   rules:
-  - host: sandcastle.${DOMAIN}
+  - host: ${HOST}
     http:
       paths:
       - path: /api/accesscontrol
