@@ -29,9 +29,9 @@ jobs:
             mv temp.yaml manifests/$PROJECT.yaml
           cat manifests/$PROJECT.yaml
 
-      - name: "Deploy project"
+      - name: "Deploy ${{ env.PROJECT }}"
         uses: actions-hub/kubectl@v1.29.2
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: apply -f manifests/$PROJECT.yaml
+          args: apply -f manifests/${{ env.PROJECT }}.yaml
