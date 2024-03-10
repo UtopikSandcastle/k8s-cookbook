@@ -47,10 +47,10 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: hello-world-volume
-          mountPath: /usr/share/nginx/html
-      volumes:
-      - name: hello-world-volume
-        configMap:
-          name: hello-world
+      #   volumeMounts:
+      #   - name: hello-world-volume
+      #     mountPath: /usr/share/nginx/html
+      # volumes:
+      # - name: hello-world-volume
+      #   configMap:
+      #     name: hello-world
