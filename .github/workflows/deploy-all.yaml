@@ -1,0 +1,26 @@
+name: Deploy All Projects
+
+on:
+  push:
+
+env:
+  PROJECTS: ("accesscontrol-api")
+
+jobs:
+  deploy_all:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Loop over projects
+        run: |
+          for project in "${PROJECTS[@]}"; do
+            echo "Deploying $project..."
+            # Call the 'deploy' workflow for each project
+            curl -X POST -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              https://api.github.com/repos/your-username/$project/actions/workflows/deploy.yaml/dispatches \
+              -d '{"ref":"main", "inputs": {"project": "$project"}}'
+          done

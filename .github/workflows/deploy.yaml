@@ -10,13 +10,12 @@ on:
         description: 'Version to deploy'
         required: true
         default: 'main'
-  push:
 
 env:
   DOMAIN: utopiklab.net
   REGISTRY: ghcr.io
-  PROJECT: ${{ github.event.inputs.project || 'accesscontrol-api' }}
-  VERSION: ${{ github.event.inputs.version || 'main' }} 
+  PROJECT: ${{ github.event.inputs.project }}
+  VERSION: ${{ github.event.inputs.version }} 
 
 jobs:
   deploy:
