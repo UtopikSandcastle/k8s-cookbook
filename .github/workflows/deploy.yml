@@ -2,10 +2,21 @@ name: Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      project:
+        description: 'Project to deploy'
+        required: true
+        default: 'accesscontrol-api'
+      version:
+        description: 'Version to deploy'
+        required: true
+        default: 'main'
   push:
 
 env:
   DOMAIN: utopiklab.net
+  PROJECT: ${{ github.event.inputs.project }}
+  VERSION: ${{ github.event.inputs.version }} 
 
 jobs:
   deploy:
@@ -13,16 +24,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: |
-          envsubst < manifests/accesscontrol-api.yaml > temp.yaml && \
-            mv temp.yaml manifests/accesscontrol-api.yaml
-          cat manifests/accesscontrol-api.yaml
+      - name: "Set up manifest"
+        run: |
+          envsubst < manifests/$PROJECT.yaml > temp.yaml && \
+            mv temp.yaml manifests/$PROJECT.yaml
+          cat manifests/$PROJECT.yaml
 
-      - name: "Deploy: accesscontrol-api"
+      - name: "Deploy: $PROJECT"
         uses: actions-hub/kubectl@v1.29.2
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-          REGISTRY: ghcr.io
-          VERSION: main
         with:
-          args: apply -f manifests/accesscontrol-api.yaml
+          args: apply -f manifests/$PROJECT.yaml
