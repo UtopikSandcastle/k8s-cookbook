@@ -16,6 +16,7 @@ jobs:
       - run: |
           envsubst < manifests/accesscontrol-api.yaml > temp.yaml && \
             mv temp.yaml manifests/accesscontrol-api.yaml
+          cat manifests/accesscontrol-api.yaml
 
       - name: "Deploy: accesscontrol-api"
         uses: actions-hub/kubectl@v1.29.2
