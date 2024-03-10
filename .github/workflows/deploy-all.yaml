@@ -16,12 +16,8 @@ jobs:
           for project in "${PROJECTS[@]}"; do
             echo "Deploying $project..."
             # Call the 'deploy' workflow for each project
-            response=$(curl -v --trace -X POST -H "Accept: application/vnd.github.v3+json" \
+            curl -v -X POST -H "Accept: application/vnd.github.v3+json" \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                 https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yaml/dispatches \
-                -d '{"ref":"$(basename ${{ github.ref }})", "inputs": {"project": "$project"}}')
-            if [[ $response == *"error"* ]]; then
-              echo "Error occurred while deploying $project"
-              exit 1
-            fi
+                -d '{"ref":"$(basename ${{ github.ref }})", "inputs": {"project": "$project"}}' --trace-ascii -
           done
