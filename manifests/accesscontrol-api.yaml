@@ -47,7 +47,7 @@ spec:
       - name: accesscontrol-api
         image: ${REGISTRY}/utopiksandcastle/accesscontrol-api:${VERSION}
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         resources:
           limits:
             cpu: "0.5"
