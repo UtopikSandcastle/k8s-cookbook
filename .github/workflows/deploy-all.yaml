@@ -7,7 +7,7 @@ on:
 env:
   HOST: sandcastle.utopiklab.net
   REGISTRY: ghcr.io
-  VERSION: main
+  VERSION: pr.22
 
 jobs:
   deploy-all:
