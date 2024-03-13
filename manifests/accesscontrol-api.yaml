@@ -55,6 +55,9 @@ spec:
             requests:
               cpu: "0.1"
               memory: "128Mi"
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
 
 ---
 apiVersion: v1
