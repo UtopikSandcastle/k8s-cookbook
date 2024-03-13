@@ -5,16 +5,16 @@ metadata:
   name: accesscontrol-api
 spec:
   rules:
-  - host: ${HOST}
-    http:
-      paths:
-      - path: /api/accesscontrol
-        pathType: Prefix
-        backend:
-          service:
-            name: accesscontrol-api
-            port:
-              number: 8080
+    - host: ${HOST}
+      http:
+        paths:
+          - path: /api/accesscontrol
+            pathType: Prefix
+            backend:
+              service:
+                name: accesscontrol-api
+                port:
+                  number: 8080
 
 ---
 apiVersion: v1
@@ -23,7 +23,7 @@ metadata:
   name: accesscontrol-api
 spec:
   selector:
-    app:  accesscontrol-api
+    app: accesscontrol-api
   ports:
     - port: 8080
       protocol: TCP
@@ -44,15 +44,73 @@ spec:
         app: accesscontrol-api
     spec:
       containers:
-      - name: accesscontrol-api
-        image: ${REGISTRY}/utopiksandcastle/accesscontrol-api:${VERSION}
-        ports:
-        - containerPort: 8080
-        resources:
-          limits:
-            cpu: "0.5"
-            memory: "512Mi"
-          requests:
-            cpu: "0.1"
-            memory: "128Mi"
-            
+        - name: accesscontrol-api
+          image: ${REGISTRY}/utopiksandcastle/accesscontrol-api:${VERSION}
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "512Mi"
+            requests:
+              cpu: "0.1"
+              memory: "128Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - port: 27017
+      protocol: TCP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "512Mi"
+            requests:
+              cpu: "0.1"
+              memory: "128Mi"
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
