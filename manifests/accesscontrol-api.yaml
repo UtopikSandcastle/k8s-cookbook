@@ -14,7 +14,7 @@ spec:
               service:
                 name: accesscontrol-api
                 port:
-                  number: 5091
+                  number: 7291
 
 ---
 apiVersion: v1
@@ -25,7 +25,7 @@ spec:
   selector:
     app: accesscontrol-api
   ports:
-    - port: 5091
+    - port: 7291
       protocol: TCP
 
 ---
@@ -47,7 +47,7 @@ spec:
         - name: accesscontrol-api
           image: ${REGISTRY}/utopiksandcastle/accesscontrol-api:${VERSION}
           ports:
-            - containerPort: 5091
+            - containerPort: 7291
           resources:
             limits:
               cpu: "0.5"
