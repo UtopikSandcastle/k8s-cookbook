@@ -8,7 +8,7 @@ spec:
     - host: ${HOST}
       http:
         paths:
-          - path: /api/accesscontrol
+          - path: /api/accesscontrol/
             pathType: Prefix
             backend:
               service:
