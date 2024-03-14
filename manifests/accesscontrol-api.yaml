@@ -14,7 +14,7 @@ spec:
               service:
                 name: accesscontrol-api
                 port:
-                  number: 7291
+                  number: 8080
 
 ---
 apiVersion: v1
@@ -25,7 +25,7 @@ spec:
   selector:
     app: accesscontrol-api
   ports:
-    - port: 7291
+    - port: 8080
       protocol: TCP
 
 ---
@@ -47,7 +47,7 @@ spec:
         - name: accesscontrol-api
           image: ${REGISTRY}/utopiksandcastle/accesscontrol-api:${VERSION}
           ports:
-            - containerPort: 7291
+            - containerPort: 8080
           resources:
             limits:
               cpu: "0.5"
@@ -55,9 +55,6 @@ spec:
             requests:
               cpu: "0.1"
               memory: "128Mi"
-          env:
-            - name: ASPNETCORE_ENVIRONMENT
-              value: Development
 
 ---
 apiVersion: v1
