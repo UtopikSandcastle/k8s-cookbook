@@ -51,6 +51,9 @@ spec:
         - name: accesscontrol-api
           image: ${REGISTRY}/utopiksandcastle/accesscontrol-api:${VERSION}
           imagePullPolicy: Always
+          env:
+            - name: LOGGING__LOGLEVEL__DEFAULT
+              value: Debug
           # ports:
           #   - containerPort: 8080
           # resources:
