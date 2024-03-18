@@ -11,8 +11,8 @@ spec:
     - host: ${HOST}
       http:
         paths:
-          - path: /api/accesscontrol/
-            pathType: Prefix
+          - path: /api/accesscontrol/(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: accesscontrol-api
