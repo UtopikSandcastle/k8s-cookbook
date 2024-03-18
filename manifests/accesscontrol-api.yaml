@@ -3,32 +3,19 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: accesscontrol-api
-  annotations:
-    traefik.ingress.kubernetes.io/rewrite-target: /$1
-    traefik.ingress.kubernetes.io/router.middlewares: accesscontrol-api-stripprefix@kubernetescrd
 spec:
   rules:
     - host: ${HOST}
       http:
         paths:
-          - path: /api/accesscontrol/(.*)
-            pathType: ImplementationSpecific
+          - path: /api/accesscontrol/
+            pathType: Prefix
             backend:
               service:
                 name: accesscontrol-api
                 port:
                   number: 8080
-
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: accesscontrol-api-stripprefix
-spec:
-  stripPrefix:
-    prefixes:
-      - "/api/accesscontrol"
-
+                  
 ---
 apiVersion: v1
 kind: Service
