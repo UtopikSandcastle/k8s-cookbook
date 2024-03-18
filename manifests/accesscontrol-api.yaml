@@ -54,6 +54,8 @@ spec:
           env:
             - name: LOGGING__LOGLEVEL__DEFAULT
               value: Debug
+            - name: LOGGING__LOGLEVEL__Microsoft.AspNetCore
+              value: Debug
           # ports:
           #   - containerPort: 8080
           # resources:
