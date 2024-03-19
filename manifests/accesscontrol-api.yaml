@@ -5,17 +5,17 @@ metadata:
   name: accesscontrol-api
 spec:
   rules:
-    - host: ${HOST}
+    - host: accesscontrol.${HOST}
       http:
         paths:
-          - path: /api/accesscontrol/
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: accesscontrol-api
                 port:
                   number: 8080
-                  
+
 ---
 apiVersion: v1
 kind: Service
